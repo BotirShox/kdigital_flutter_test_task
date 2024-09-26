@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.13.4 <3.0.0"
+  sdk: ">=3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -16,8 +16,10 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   http: ^0.13.4
+  bloc_concurrency:
   json_annotation: ^4.4.0
   cupertino_icons: ^1.0.2
+  cached_network_image:
 
 dev_dependencies:
   flutter_test:

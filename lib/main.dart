@@ -1,9 +1,10 @@
-import 'package:kdigital_test/src/di/main_di_module.dart';
-import 'package:kdigital_test/src/presentation/ui/character_screen.dart';
+import 'package:kdigital_test/src/di/main_di.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kdigital_test/src/presentation/ui/character_screen.dart';
 
 void main() {
+  MainDI().configure(GetIt.I);
   runApp(const MyApp());
 }
 
@@ -12,9 +13,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MainDIModule().configure(GetIt.I);
     return MaterialApp(
-      title: 'Test app',
+      debugShowCheckedModeBanner: false,
+      title: 'Kdigital',
       home: CharactersScreen(),
     );
   }

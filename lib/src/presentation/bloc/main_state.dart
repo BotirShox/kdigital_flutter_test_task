@@ -1,7 +1,6 @@
-import 'package:kdigital_test/src/data/models/character.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class MainPageState extends Equatable {}
+ sealed class MainPageState extends Equatable {}
 
 class InitialMainPageState extends MainPageState {
   @override
@@ -13,16 +12,16 @@ class LoadingMainPageState extends MainPageState {
   List<Object> get props => [];
 }
 
-class UnSuccessfulMainPageState extends MainPageState {
+class FailedMainPageState extends MainPageState {
+  final Object error;
+
+  FailedMainPageState(this.error);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [error];
 }
 
 class SuccessfulMainPageState extends MainPageState {
-  final List<Character> characters;
-
-  SuccessfulMainPageState(this.characters);
-
   @override
-  List<Object> get props => [characters];
+  List<Object> get props => [];
 }

@@ -1,11 +1,13 @@
-import 'package:kdigital_test/src/data/models/character.dart';
-import 'package:kdigital_test/src/data/repository/characters_repository.dart';
 import 'package:kdigital_test/src/presentation/bloc/main_bloc.dart';
 import 'package:kdigital_test/src/presentation/bloc/main_event.dart';
 import 'package:kdigital_test/src/presentation/bloc/main_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kdigital_test/src/presentation/widgets/loading_widget.dart';
+import '../../domain/characters.dart';
+import '../widgets/failed_widget.dart';
+import '../widgets/success_widget.dart';
 
 @immutable
 class CharactersScreen extends StatelessWidget {
@@ -14,76 +16,24 @@ class CharactersScreen extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => MainPageBloc(
-          InitialMainPageState(),
           GetIt.I.get<CharactersRepository>(),
-        )..add(const GetTestDataOnMainPageEvent(1)),
-        child: BlocConsumer<MainPageBloc, MainPageState>(
-          listener: (context, state) {},
+        )..add(const GetTestDataOnMainPageEvent()),
+        child: BlocBuilder<MainPageBloc, MainPageState>(
           builder: (blocContext, state) {
-            if (state is LoadingMainPageState) {
-              return _loadingWidget(context);
+            final bloc = blocContext.read<MainPageBloc>();
+            if (state is LoadingMainPageState && bloc.page == 1 ||
+                bloc.fromError) {
+              return LoadingWidget();
             } else if (state is SuccessfulMainPageState) {
-              return _successfulWidget(context, state);
+              return SuccessfulWidget(bloc.characters);
+            } else if (state is FailedMainPageState) {
+              return FailedWidget('${state.error}');
+            } else if (bloc.connectionError) {
+              return FailedWidget('lookup');
             } else {
-              return Center(child: const Text("error"));
+              return SuccessfulWidget(bloc.characters);
             }
           },
-        ),
-      ),
-    );
-  }
-
-  Widget _loadingWidget(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 50,
-        height: 50,
-        margin: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-        ),
-        child: const CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  Widget _successfulWidget(
-      BuildContext context, SuccessfulMainPageState state) {
-    return ListView.builder(
-      cacheExtent: double.infinity,
-      itemCount: state.characters.length,
-      itemBuilder: (context, index) {
-        return _characterWidget(context, state.characters[index]);
-      },
-    );
-  }
-
-  Widget _characterWidget(BuildContext context, Character character) {
-    return Container(
-      alignment: Alignment.topLeft,
-      padding: EdgeInsets.all(8),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        width: double.infinity,
-        decoration: ShapeDecoration(
-          color: Color.fromARGB(120, 204, 255, 255),
-          shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.circular(32),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(character.name),
-            ),
-            Image.network(
-              character.image,
-              width: 50,
-              height: 50,
-            ),
-          ],
         ),
       ),
     );
