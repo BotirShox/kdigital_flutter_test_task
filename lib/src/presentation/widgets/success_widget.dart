@@ -14,8 +14,8 @@ class SuccessfulWidget extends StatelessWidget {
     final bloc = context.read<MainPageBloc>();
     return ListView.builder(
       key: PageStorageKey('Scroll'),
-      padding: EdgeInsets.symmetric(vertical: 20),
-      itemExtent: 200,
+      padding: EdgeInsets.symmetric(vertical: 10),
+      itemExtent: 210,
       itemCount: characters.length,
       itemBuilder: (_, i) {
         bloc.index = i;

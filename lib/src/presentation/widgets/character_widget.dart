@@ -24,14 +24,14 @@ class CharacterWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
+                borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: CachedNetworkImage(
                   imageUrl: character.image,
-                  width: 70,
-                  height: 70,
+                  width: 60,
+                  height: 60,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
